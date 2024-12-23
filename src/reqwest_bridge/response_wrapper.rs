@@ -27,23 +27,13 @@ impl ResponseWrapper {
 
 #[cfg(test)]
 mod tests {
-    use std::{
-        borrow::Borrow,
-        error,
-        fmt::Result,
-        io::{self, ErrorKind},
-        rc::Rc,
-    };
-
     use actix_web::{
         HttpResponse,
-        body::{MessageBody, to_bytes},
+        body::{MessageBody},
         http::StatusCode,
-        test::TestRequest,
     };
     use http::response::Builder;
-    use reqwest::{Error, RequestBuilder, Response};
-    use url::Url;
+    use reqwest::{Response};
 
     use super::*;
 

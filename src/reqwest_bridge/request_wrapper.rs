@@ -35,7 +35,7 @@ mod tests {
     use actix_web::test::TestRequest;
     use actix_web::web::Bytes;
     use reqwest::{Method, Url};
-    use reqwest::header::{HeaderName, HeaderValue};
+    use reqwest::header::{HeaderValue};
     use pretty_assertions::assert_eq;
 
     use super::*;
