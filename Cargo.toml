@@ -1,0 +1,14 @@
+[package]
+name = "actix_bridges"
+version = "0.1.0"
+edition = "2024"
+
+[dev-dependencies]
+pretty_assertions = "1.4.1"
+http = "1.2.0"
+url = "2.4.0"
+
+[dependencies]
+reqwest = "0.12.9"
+actix-web = "4.9.0"
+log = "0.4.17"
