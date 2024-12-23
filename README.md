@@ -6,7 +6,7 @@ provide libs to convert from/to actix_web `HttpRequest` or `HttpResponse`
 
 ## reqwest_bridge 
 
-**convert actix_web `HttpRequest` to reqwest `Request`
+**convert actix_web `HttpRequest` to reqwest `Request`**
 ```rust
     let url = Url::parse("https://echo.free.beeceptor.com").unwrap();
     let mut request_wrapper: RequestWrapper = RequestWrapper::from(ActixWebRequestWrapper::new(req, bytes));
@@ -16,7 +16,7 @@ provide libs to convert from/to actix_web `HttpRequest` or `HttpResponse`
     log::info!("reqwest_req after set: {:#?}", request);
 ```
 
-**convert reqwest `Response` to actix_web `HttpResponse`
+**convert reqwest `Response` to actix_web `HttpResponse`**
 ```rust
     let ret: HttpResponse<BoxBody> = ResponseWrapper::new(response).into().await;
 ```
