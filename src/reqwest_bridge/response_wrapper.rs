@@ -1,5 +1,4 @@
 use actix_web::{HttpResponse, body::BoxBody, http::StatusCode};
-use async_compression::futures::bufread::GzipDecoder;
 use futures::{io::ErrorKind, prelude::*};
 use reqwest::header::HeaderMap;
 
@@ -24,34 +23,18 @@ impl ResponseWrapper {
         Self::into_actix_response(headers, status, response).await
     }
 
-    fn get_header(headers: Box<HeaderMap>, key: &str, default: &str) -> String {
-        let value_opt = headers.get(key);
-        let value = match value_opt {
-            Some(content_type) => content_type.to_str().unwrap_or(default),
-            None => default,
-        };
-        String::from(value)
-    }
-
     async fn into_actix_response(
         headers: HeaderMap,
         status: reqwest::StatusCode,
         response: reqwest::Response,
     ) -> HttpResponse {
         let headers = Box::new(headers);
-        let content_type = Self::get_header(headers.clone(), "content-type", "application/text");
-        let content_encoding = Self::get_header(headers.clone(), "content-encoding", "");
         let mut reader = response
             .bytes_stream()
             .map_err(|e| std::io::Error::new(ErrorKind::Other, e))
             .into_async_read();
         let mut data = String::new();
-        if "gzip" == content_encoding || "application/gzip" == content_type {
-            let mut decoder = GzipDecoder::new(reader);
-            decoder.read_to_string(&mut data).await.unwrap();
-        } else {
-            reader.read_to_string(&mut data).await.unwrap();
-        }
+        reader.read_to_string(&mut data).await.unwrap();
         let mut ret = HttpResponse::new(StatusCode::from_u16(status.as_u16()).unwrap())
             .set_body(BoxBody::new(data));
         let response_headers = ret.headers_mut();
