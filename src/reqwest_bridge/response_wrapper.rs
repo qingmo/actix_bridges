@@ -1,3 +1,5 @@
+use std::vec;
+
 use actix_web::{HttpResponse, body::BoxBody, http::StatusCode};
 use futures::{io::ErrorKind, prelude::*};
 use reqwest::header::HeaderMap;
@@ -33,10 +35,10 @@ impl ResponseWrapper {
             .bytes_stream()
             .map_err(|e| std::io::Error::new(ErrorKind::Other, e))
             .into_async_read();
-        let mut data = String::new();
-        reader.read_to_string(&mut data).await.unwrap();
+        let mut output = vec![];
+        let _bytes = reader.read_to_end(&mut output).await.unwrap();
         let mut ret = HttpResponse::new(StatusCode::from_u16(status.as_u16()).unwrap())
-            .set_body(BoxBody::new(data));
+            .set_body(BoxBody::new(output));
         let response_headers = ret.headers_mut();
         headers.iter().for_each(|(key, value)| {
             response_headers.insert(
