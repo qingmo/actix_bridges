@@ -17,9 +17,9 @@ impl ResponseWrapper {
     async fn handle_reqwest_response(response: reqwest::Response) -> HttpResponse {
         let headers = response.headers().clone();
         let status = response.status();
-        log::info!("headers: {:#?}", headers);
+        log::trace!("headers: {:#?}", headers);
         if !status.is_success() {
-            log::info!("status: {}", status);
+            log::trace!("status: {}", status);
             return HttpResponse::new(StatusCode::from_u16(status.as_u16()).unwrap());
         }
         Self::into_actix_response(headers, status, response).await
